@@ -1,0 +1,210 @@
+{
+  "config": {
+    "step": {
+      "pick_implementation": {
+        "title": "Select Strava authentication method"
+      },
+      "reauth_confirm": {
+        "title": "Reauthorize Strava",
+        "description": "Strava Webhook requires you to sign in to your Strava account again."
+      }
+    },
+    "abort": {
+      "already_configured": "This Strava account is already configured.",
+      "already_in_progress": "Configuration flow is already in progress.",
+      "authorize_url_timeout": "Timeout generating authorization URL.",
+      "cannot_connect": "Failed to connect to Strava API.",
+      "missing_activity_scope": "Activity read permission (activity:read or activity:read_all) was not granted.",
+      "missing_credentials": "Add your Client ID and Client Secret in Application Credentials first.",
+      "no_url_available": "No public HTTPS URL is configured for Home Assistant.",
+      "oauth_error": "Strava OAuth2 authentication failed.",
+      "reauth_successful": "Reauthorization was successful.",
+      "wrong_account": "Authenticated with a different Strava account than originally configured."
+    },
+    "create_entry": {
+      "default": "Successfully connected to Strava and registered webhook subscription."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Strava Webhook Options",
+        "data": {
+          "enrich_activities": "Fetch full activity details from Strava API",
+          "custom_callback_url": "Custom public webhook URL (optional)",
+          "replace_existing_subscription": "Replace existing Strava subscription on URL conflict"
+        },
+        "data_description": {
+          "enrich_activities": "For create/update events, fetches activity metadata (sport_type, name, distance, device_name, heart rate).",
+          "custom_callback_url": "Leave empty to use Home Assistant's configured public External URL.",
+          "replace_existing_subscription": "Strava allows at most one webhook subscription per Client ID. Enable this to automatically delete an existing subscription pointing to a different URL."
+        }
+      }
+    },
+    "error": {
+      "invalid_callback_url": "Enter a valid HTTPS URL (without embedded credentials)."
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "activity_created": "Activity created",
+      "activity_updated": "Activity updated",
+      "activity_created_or_updated": "Activity created or updated",
+      "activity_deleted": "Activity deleted",
+      "webhook_received": "Any Strava webhook received"
+    },
+    "extra_fields": {
+      "sport_type": "Sport type (empty = any)",
+      "object_type": "Object type (object_type)",
+      "aspect_type": "Aspect type (aspect_type)"
+    }
+  },
+  "selector": {
+    "object_type": {
+      "options": {
+        "activity": "Activity",
+        "athlete": "Athlete"
+      }
+    },
+    "aspect_type": {
+      "options": {
+        "create": "Create",
+        "update": "Update",
+        "delete": "Delete"
+      }
+    },
+    "sport_type": {
+      "options": {
+        "AlpineSki": "Alpine Ski",
+        "BackcountrySki": "Backcountry Ski",
+        "Badminton": "Badminton",
+        "Basketball": "Basketball",
+        "Canoeing": "Canoeing",
+        "Cricket": "Cricket",
+        "Crossfit": "Crossfit",
+        "Dance": "Dance",
+        "EBikeRide": "E-Bike Ride",
+        "Elliptical": "Elliptical",
+        "EMountainBikeRide": "E-Mountain Bike Ride",
+        "Golf": "Golf",
+        "GravelRide": "Gravel Ride",
+        "Handcycle": "Handcycle",
+        "HighIntensityIntervalTraining": "HIIT",
+        "Hike": "Hike",
+        "IceSkate": "Ice Skate",
+        "InlineSkate": "Inline Skate",
+        "Kayaking": "Kayaking",
+        "Kitesurf": "Kitesurf",
+        "MountainBikeRide": "Mountain Bike Ride",
+        "NordicSki": "Nordic Ski",
+        "Other": "Other",
+        "Padel": "Padel",
+        "Pickleball": "Pickleball",
+        "Pilates": "Pilates",
+        "Racquetball": "Racquetball",
+        "Ride": "Ride",
+        "RockClimbing": "Rock Climbing",
+        "RollerSki": "Roller Ski",
+        "Rowing": "Rowing",
+        "Run": "Run",
+        "Sail": "Sail",
+        "Skateboard": "Skateboard",
+        "Snowboard": "Snowboard",
+        "Snowshoe": "Snowshoe",
+        "Soccer": "Soccer",
+        "Squash": "Squash",
+        "StairStepper": "Stair Stepper",
+        "StandUpPaddling": "Stand Up Paddling",
+        "Surfing": "Surfing",
+        "Swim": "Swim",
+        "TableTennis": "Table Tennis",
+        "Tennis": "Tennis",
+        "TrailRun": "Trail Run",
+        "Velomobile": "Velomobile",
+        "VirtualRide": "Virtual Ride",
+        "VirtualRow": "Virtual Row",
+        "VirtualRun": "Virtual Run",
+        "Volleyball": "Volleyball",
+        "Walk": "Walk",
+        "WeightTraining": "Weight Training",
+        "Wheelchair": "Wheelchair",
+        "Windsurf": "Windsurf",
+        "Workout": "Workout",
+        "Yoga": "Yoga"
+      }
+    }
+  },
+  "entity": {
+    "event": {
+      "last_webhook_event": {
+        "name": "Last webhook event",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "activity_created": "Activity created",
+              "activity_updated": "Activity updated",
+              "activity_deleted": "Activity deleted",
+              "athlete_updated": "Athlete updated",
+              "webhook_received": "Webhook received"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "webhook_status": {
+        "name": "Webhook status",
+        "state": {
+          "connected": "Connected",
+          "error": "Error",
+          "disconnected": "Disconnected"
+        }
+      }
+    }
+  },
+  "services": {
+    "resync_subscription": {
+      "name": "Resync webhook subscription",
+      "description": "Verifies and recreates the webhook subscription in the Strava Push Subscriptions API.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Config entry ID",
+          "description": "Optional Strava Webhook config entry ID (defaults to all loaded entries)."
+        }
+      }
+    },
+    "simulate_event": {
+      "name": "Simulate Strava webhook event",
+      "description": "Fires a test strava_webhook_event on the event bus and updates entities so automations can be tested without completing a workout.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Config entry ID",
+          "description": "Optional Strava Webhook config entry ID (defaults to the first loaded entry)."
+        },
+        "object_type": {
+          "name": "Object type (object_type)"
+        },
+        "aspect_type": {
+          "name": "Aspect type (aspect_type)"
+        },
+        "object_id": {
+          "name": "Object ID (object_id)"
+        },
+        "sport_type": {
+          "name": "Sport type (sport_type)"
+        },
+        "name": {
+          "name": "Activity name"
+        },
+        "updates": {
+          "name": "Updates dictionary",
+          "description": "Optional webhook updates dictionary (e.g. {\"title\":\"New Title\"})."
+        },
+        "extra_activity_data": {
+          "name": "Extra activity fields",
+          "description": "Additional activity attributes (e.g. device_name, private, distance)."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "config": {
+    "step": {
+      "pick_implementation": {
+        "title": "Wybierz metodę autoryzacji Strava"
+      },
+      "reauth_confirm": {
+        "title": "Ponowna autoryzacja Strava",
+        "description": "Integracja Strava Webhook wymaga ponownego zalogowania do konta Strava."
+      }
+    },
+    "abort": {
+      "already_configured": "To konto Strava jest już skonfigurowane.",
+      "already_in_progress": "Konfiguracja jest już w toku.",
+      "authorize_url_timeout": "Przekroczono limit czasu generowania URL autoryzacji.",
+      "cannot_connect": "Nie udało się połączyć z API Strava.",
+      "missing_activity_scope": "Nie przyznano uprawnienia do odczytu aktywności (activity:read lub activity:read_all).",
+      "missing_credentials": "Dodaj najpierw Client ID i Client Secret w Poświadczeniach aplikacji (Application Credentials).",
+      "no_url_available": "Brak skonfigurowanego publicznego adresu HTTPS dla Home Assistant.",
+      "oauth_error": "Błąd uwierzytelniania OAuth2 Strava.",
+      "reauth_successful": "Ponowna autoryzacja zakończyła się powodzeniem.",
+      "wrong_account": "Zalogowano się na inne konto Strava niż oryginalnie skonfigurowane."
+    },
+    "create_entry": {
+      "default": "Pomyślnie połączono z kontem Strava i skonfigurowano nasłuch webhooków."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opcje Strava Webhook",
+        "data": {
+          "enrich_activities": "Dociągaj pełne dane aktywności z API Strava",
+          "custom_callback_url": "Własny publiczny URL webhooka (opcjonalnie)",
+          "replace_existing_subscription": "Zastąp istniejącą subskrypcję webhooka w razie konfliktu URL"
+        },
+        "data_description": {
+          "enrich_activities": "Dla zdarzeń create/update pobiera szczegóły aktywności (sport_type, nazwa, dystans, urządzenie, tętno).",
+          "custom_callback_url": "Pozostaw puste, aby użyć domyślnego publicznego adresu zewnętrznego Home Assistant.",
+          "replace_existing_subscription": "Strava zezwala na maksymalnie jedną subskrypcję webhooka na jedno Client ID. Włącz, jeśli chcesz automatycznie usunąć starą subskrypcję pod innym URL."
+        }
+      }
+    },
+    "error": {
+      "invalid_callback_url": "Podaj prawidłowy adres HTTPS (bez danych logowania w URL)."
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "activity_created": "Dodano nową aktywność",
+      "activity_updated": "Zaktualizowano aktywność",
+      "activity_created_or_updated": "Dodano lub zaktualizowano aktywność",
+      "activity_deleted": "Usunięto aktywność",
+      "webhook_received": "Odebrano dowolny webhook Strava"
+    },
+    "extra_fields": {
+      "sport_type": "Typ sportu (puste = dowolny)",
+      "object_type": "Typ obiektu (object_type)",
+      "aspect_type": "Typ operacji (aspect_type)"
+    }
+  },
+  "selector": {
+    "object_type": {
+      "options": {
+        "activity": "Aktywność (activity)",
+        "athlete": "Sportowiec (athlete)"
+      }
+    },
+    "aspect_type": {
+      "options": {
+        "create": "Utworzenie (create)",
+        "update": "Aktualizacja (update)",
+        "delete": "Usunięcie (delete)"
+      }
+    },
+    "sport_type": {
+      "options": {
+        "AlpineSki": "Narciarstwo alpejskie (AlpineSki)",
+        "BackcountrySki": "Narciarstwo skiturowe (BackcountrySki)",
+        "Badminton": "Badminton",
+        "Basketball": "Koszykówka (Basketball)",
+        "Canoeing": "Kajakarstwo (Canoeing)",
+        "Cricket": "Krykiet (Cricket)",
+        "Crossfit": "Crossfit",
+        "Dance": "Taniec (Dance)",
+        "EBikeRide": "Rower elektryczny (EBikeRide)",
+        "Elliptical": "Orbitrek (Elliptical)",
+        "EMountainBikeRide": "E-MTB (EMountainBikeRide)",
+        "Golf": "Golf",
+        "GravelRide": "Gravel (GravelRide)",
+        "Handcycle": "Handbike (Handcycle)",
+        "HighIntensityIntervalTraining": "HIIT (HighIntensityIntervalTraining)",
+        "Hike": "Wędrówka górska (Hike)",
+        "IceSkate": "Łyżwiarstwo (IceSkate)",
+        "InlineSkate": "Rolki (InlineSkate)",
+        "Kayaking": "Kajak (Kayaking)",
+        "Kitesurf": "Kitesurfing",
+        "MountainBikeRide": "MTB (MountainBikeRide)",
+        "NordicSki": "Narciarstwo biegowe (NordicSki)",
+        "Other": "Inny (Other)",
+        "Padel": "Padel",
+        "Pickleball": "Pickleball",
+        "Pilates": "Pilates",
+        "Racquetball": "Racquetball",
+        "Ride": "Jazda na rowerze (Ride)",
+        "RockClimbing": "Wspinaczka (RockClimbing)",
+        "RollerSki": "Nartorolki (RollerSki)",
+        "Rowing": "Wioślarstwo (Rowing)",
+        "Run": "Bieganie (Run)",
+        "Sail": "Żeglarstwo (Sail)",
+        "Skateboard": "Deskorolka (Skateboard)",
+        "Snowboard": "Snowboard",
+        "Snowshoe": "Rakiety śnieżne (Snowshoe)",
+        "Soccer": "Piłka nożna (Soccer)",
+        "Squash": "Squash",
+        "StairStepper": "Stepper / schody (StairStepper)",
+        "StandUpPaddling": "SUP (StandUpPaddling)",
+        "Surfing": "Surfing",
+        "Swim": "Pływanie (Swim)",
+        "TableTennis": "Tenis stołowy (TableTennis)",
+        "Tennis": "Tenis (Tennis)",
+        "TrailRun": "Bieg górski / trail (TrailRun)",
+        "Velomobile": "Velomobile",
+        "VirtualRide": "Wirtualna jazda (VirtualRide)",
+        "VirtualRow": "Wirtualne wioślarstwo (VirtualRow)",
+        "VirtualRun": "Wirtualny bieg (VirtualRun)",
+        "Volleyball": "Siatkówka (Volleyball)",
+        "Walk": "Spacer / chód (Walk)",
+        "WeightTraining": "Trening siłowy (WeightTraining)",
+        "Wheelchair": "Wózek (Wheelchair)",
+        "Windsurf": "Windsurfing",
+        "Workout": "Trening ogólny (Workout)",
+        "Yoga": "Joga (Yoga)"
+      }
+    }
+  },
+  "entity": {
+    "event": {
+      "last_webhook_event": {
+        "name": "Ostatnie zdarzenie webhooka",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "activity_created": "Dodano aktywność",
+              "activity_updated": "Zaktualizowano aktywność",
+              "activity_deleted": "Usunięto aktywność",
+              "athlete_updated": "Zaktualizowano konto sportowca",
+              "webhook_received": "Odebrano webhook"
+            }
+          }
+        }
+      }
+    },
+    "sensor": {
+      "webhook_status": {
+        "name": "Status webhooka",
+        "state": {
+          "connected": "Połączono",
+          "error": "Błąd",
+          "disconnected": "Rozłączono"
+        }
+      }
+    }
+  },
+  "services": {
+    "resync_subscription": {
+      "name": "Odśwież subskrypcję webhooka",
+      "description": "Sprawdza i odtwarza subskrypcję webhooka w Strava Push Subscriptions API.",
+      "fields": {
+        "config_entry_id": {
+          "name": "ID wpisu konfiguracji",
+          "description": "Opcjonalne ID konkretnego konta Strava Webhook (domyślnie wszystkie załadowane)."
+        }
+      }
+    },
+    "simulate_event": {
+      "name": "Symuluj zdarzenie webhooka Strava",
+      "description": "Wysyła testowe zdarzenie strava_webhook_event oraz aktualizuje encje w celu przetestowania automatyzacji.",
+      "fields": {
+        "config_entry_id": {
+          "name": "ID wpisu konfiguracji",
+          "description": "Opcjonalne ID konta Strava Webhook (domyślnie pierwsze załadowane)."
+        },
+        "object_type": {
+          "name": "Typ obiektu (object_type)"
+        },
+        "aspect_type": {
+          "name": "Typ operacji (aspect_type)"
+        },
+        "object_id": {
+          "name": "ID obiektu (object_id)"
+        },
+        "sport_type": {
+          "name": "Typ sportu (sport_type)"
+        },
+        "name": {
+          "name": "Nazwa aktywności"
+        },
+        "updates": {
+          "name": "Słownik updates",
+          "description": "Opcjonalne pole updates symulowanego webhooka (np. {\"title\":\"Nowa nazwa\"})."
+        },
+        "extra_activity_data": {
+          "name": "Dodatkowe pola aktywności",
+          "description": "Dodatkowe atrybuty aktywności (np. device_name, private, distance)."
+        }
+      }
+    }
+  }
+}

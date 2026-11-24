@@ -1,0 +1,68 @@
+resync_subscription:
+  name: Resync webhook subscription
+  description: Verifies and recreates the webhook subscription in the Strava Push Subscriptions API.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Optional Strava Webhook config entry ID (defaults to all loaded entries).
+      required: false
+      selector:
+        config_entry:
+          integration: strava_webhook
+
+simulate_event:
+  name: Simulate Strava webhook event
+  description: Fires a test strava_webhook_event on the event bus and updates entities so automations can be tested without completing a workout.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Optional Strava Webhook config entry ID (defaults to the first loaded entry).
+      required: false
+      selector:
+        config_entry:
+          integration: strava_webhook
+    object_type:
+      name: Object type (object_type)
+      default: activity
+      selector:
+        select:
+          options:
+            - activity
+            - athlete
+    aspect_type:
+      name: Aspect type (aspect_type)
+      default: create
+      selector:
+        select:
+          options:
+            - create
+            - update
+            - delete
+    object_id:
+      name: Object ID (object_id)
+      default: 999999999
+      selector:
+        number:
+          min: 1
+          max: 9999999999999
+          mode: box
+    sport_type:
+      name: Sport type (sport_type)
+      default: WeightTraining
+      selector:
+        text:
+    name:
+      name: Activity name
+      default: "Strength Training (test)"
+      selector:
+        text:
+    updates:
+      name: Updates dictionary
+      description: Optional webhook updates dictionary (e.g. {"title":"New Title"}).
+      selector:
+        object:
+    extra_activity_data:
+      name: Extra activity fields
+      description: Additional activity attributes (e.g. device_name, private, distance).
+      selector:
+        object:

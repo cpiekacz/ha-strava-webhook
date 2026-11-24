@@ -1,0 +1,21 @@
+{
+  "domain": "strava_webhook",
+  "name": "Strava Webhook",
+  "after_dependencies": [
+    "cloud"
+  ],
+  "codeowners": [
+    "@cpiekacz"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "application_credentials",
+    "webhook"
+  ],
+  "documentation": "https://github.com/cpiekacz/ha-strava-webhook",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/cpiekacz/ha-strava-webhook/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
