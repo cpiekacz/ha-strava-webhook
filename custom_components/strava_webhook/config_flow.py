@@ -121,8 +121,8 @@ class StravaWebhookConfigFlow(AbstractOAuth2FlowHandler, domain=DOMAIN):
         )
 
 
-class StravaWebhookOptionsFlow(config_entries.OptionsFlow):
-    """Options flow for Strava Webhook."""
+class StravaWebhookOptionsFlow(config_entries.OptionsFlowWithReload):
+    """Options flow for Strava Webhook (reloads entry only when options change)."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None

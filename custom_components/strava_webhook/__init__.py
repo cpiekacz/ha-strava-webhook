@@ -237,6 +237,15 @@ def _dispatch_runtime_event(
     runtime.last_event_time = dt_util.utcnow().isoformat()
     runtime.last_payload = payload
     runtime.notify_listeners(payload)
+    _LOGGER.info(
+        "Dispatched %s: object_type=%s aspect_type=%s object_id=%s sport_type=%s enriched=%s",
+        EVENT_STRAVA_WEBHOOK,
+        payload.get("object_type"),
+        payload.get("aspect_type"),
+        payload.get("object_id"),
+        payload.get("sport_type"),
+        payload.get("enriched"),
+    )
     hass.bus.async_fire(EVENT_STRAVA_WEBHOOK, payload)
 
 
@@ -352,6 +361,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     async def _on_webhook_received(raw_webhook: dict[str, Any]) -> None:
         # Return HTTP 200 to Strava immediately; run API enrichment in background.
+        _LOGGER.info(
+            "Received Strava webhook: object_type=%s aspect_type=%s object_id=%s owner_id=%s",
+            raw_webhook.get("object_type"),
+            raw_webhook.get("aspect_type"),
+            raw_webhook.get("object_id"),
+            raw_webhook.get("owner_id"),
+        )
         entry.async_create_background_task(
             hass,
             _async_process_webhook(raw_webhook),
@@ -390,14 +406,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = runtime
     entry.runtime_data = runtime
 
-    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
-
-
-async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Reload Strava Webhook entry when options change."""
-    await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

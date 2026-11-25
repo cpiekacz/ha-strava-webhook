@@ -124,8 +124,12 @@ def _install_ha_stubs() -> None:
     class OptionsFlow:
         pass
 
+    class OptionsFlowWithReload(OptionsFlow):
+        automatic_reload = True
+
     ce.ConfigEntry = ConfigEntry
     ce.OptionsFlow = OptionsFlow
+    ce.OptionsFlowWithReload = OptionsFlowWithReload
     sys.modules["homeassistant.config_entries"] = ce
 
     # homeassistant.data_entry_flow
