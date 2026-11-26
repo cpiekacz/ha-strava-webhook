@@ -58,7 +58,7 @@ simulate_event:
         text:
     updates:
       name: Updates dictionary
-      description: Optional webhook updates dictionary (e.g. {"title":"New Title"}).
+      description: Optional webhook updates dictionary (such as a changed title or privacy flag).
       selector:
         object:
     extra_activity_data:

@@ -86,7 +86,7 @@ async def async_get_trigger_capabilities(
     trigger_type = config.get(CONF_TYPE)
     sport_selector = selector.SelectSelector(
         selector.SelectSelectorConfig(
-            options=list(SUPPORTED_SPORT_TYPES),
+            options=[sport.lower() for sport in SUPPORTED_SPORT_TYPES],
             multiple=True,
             custom_value=True,
             translation_key="sport_type",

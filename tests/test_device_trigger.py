@@ -85,7 +85,7 @@ async def test_device_trigger_filters_by_sport_type_and_forwards_full_payload():
             "domain": DOMAIN,
             "device_id": "dev-123",
             "type": TRIGGER_ACTIVITY_CREATED,
-            CONF_SPORT_TYPE: ["WeightTraining"],
+            CONF_SPORT_TYPE: ["weighttraining"],
         },
         _action,
         {"trigger_data": {"id": "gym_trigger"}},
