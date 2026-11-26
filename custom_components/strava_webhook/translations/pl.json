@@ -1,4 +1,7 @@
 {
+  "application_credentials": {
+    "description": "Utwórz własną aplikację w [Ustawieniach API Strava]({api_settings_url}), ustaw **Authorization Callback Domain** na `{callback_domain}`, a następnie wpisz poniżej Client ID i Client Secret."
+  },
   "config": {
     "step": {
       "pick_implementation": {

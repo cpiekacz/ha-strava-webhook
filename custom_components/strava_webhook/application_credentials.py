@@ -85,6 +85,16 @@ async def async_get_authorization_server(hass: HomeAssistant) -> AuthorizationSe
     return AuthorizationServer(authorize_url=AUTHORIZE_URL, token_url=TOKEN_URL)
 
 
+async def async_get_description_placeholders(
+    hass: HomeAssistant,
+) -> dict[str, str]:
+    """Return description placeholders for the credentials dialog."""
+    return {
+        "api_settings_url": "https://www.strava.com/settings/api",
+        "callback_domain": "my.home-assistant.io",
+    }
+
+
 async def async_get_auth_implementation(
     hass: HomeAssistant, auth_domain: str, credential: ClientCredential
 ) -> StravaOAuthImplementation:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+import voluptuous as vol
 from homeassistant.components.device_automation import DEVICE_TRIGGER_BASE_SCHEMA
 from homeassistant.const import CONF_DEVICE_ID, CONF_DOMAIN, CONF_PLATFORM, CONF_TYPE
 from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant
@@ -11,9 +12,14 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import selector
 from homeassistant.helpers.trigger import TriggerActionType, TriggerInfo
 from homeassistant.helpers.typing import ConfigType
-import voluptuous as vol
 
-from .const import ASPECT_TYPES, DOMAIN, EVENT_STRAVA_WEBHOOK, OBJECT_TYPES, SUPPORTED_SPORT_TYPES
+from .const import (
+    ASPECT_TYPES,
+    DOMAIN,
+    EVENT_STRAVA_WEBHOOK,
+    OBJECT_TYPES,
+    SUPPORTED_SPORT_TYPES,
+)
 
 TRIGGER_ACTIVITY_CREATED = "activity_created"
 TRIGGER_ACTIVITY_UPDATED = "activity_updated"

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Awaitable, Callable
 import json
 import logging
 import re
 import secrets
+from collections.abc import Awaitable, Callable
 from typing import Any
 
 from aiohttp import ClientError, web
@@ -55,7 +55,7 @@ def parse_strava_id(value: Any) -> int | None:
 def validate_callback_url(url: str) -> str:
     """Validate that a webhook callback URL is a clean public HTTPS URL."""
     if not isinstance(url, str):
-        raise ValueError("Callback URL must be a string")
+        raise TypeError("Callback URL must be a string")
     cleaned = url.strip()
     if not cleaned or len(cleaned) > 255:
         raise ValueError("Callback URL length is invalid")
@@ -279,7 +279,7 @@ class SubscriptionManager:
                         body_text = ""
                         try:
                             body_text = redact_secrets(await response.text())
-                        except Exception:
+                        except (ClientError, UnicodeDecodeError):
                             body_text = ""
                         raise SubscriptionError(
                             f"Strava subscription API {method} failed with HTTP {response.status}: {body_text[:300]}"
@@ -313,8 +313,8 @@ class SubscriptionManager:
             return
         try:
             webhook.async_unregister(self.hass, self.record["webhook_id"])
-        except Exception:
-            pass
+        except (KeyError, ValueError) as err:
+            _LOGGER.debug("Ignoring webhook unregister error: %s", err)
         self.registered = False
 
     async def _ensure_remote_subscription(
@@ -467,8 +467,8 @@ class SubscriptionManager:
             finally:
                 try:
                     await self.store.async_remove()
-                except Exception:
-                    pass
+                except OSError as err:
+                    _LOGGER.debug("Ignoring subscription store removal error: %s", err)
                 self.record = {}
                 self.receiver = None
 

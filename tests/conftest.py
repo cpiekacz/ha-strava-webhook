@@ -3,14 +3,13 @@
 from __future__ import annotations
 
 import asyncio
+import sys
+import types
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from enum import Enum
-import sys
-import types
 from unittest.mock import MagicMock
 
-import aiohttp
 import voluptuous as vol
 
 if not hasattr(asyncio, "timeout"):
@@ -118,8 +117,13 @@ def _install_ha_stubs() -> None:
     ce = types.ModuleType("homeassistant.config_entries")
     ce.SOURCE_REAUTH = "reauth"
 
+    class ConfigEntryState(StrEnum):
+        LOADED = "loaded"
+        NOT_LOADED = "not_loaded"
+
     class ConfigEntry:
-        pass
+        def __class_getitem__(cls, _item):
+            return cls
 
     class OptionsFlow:
         pass
@@ -128,6 +132,7 @@ def _install_ha_stubs() -> None:
         automatic_reload = True
 
     ce.ConfigEntry = ConfigEntry
+    ce.ConfigEntryState = ConfigEntryState
     ce.OptionsFlow = OptionsFlow
     ce.OptionsFlowWithReload = OptionsFlowWithReload
     sys.modules["homeassistant.config_entries"] = ce
@@ -319,6 +324,10 @@ def _install_ha_stubs() -> None:
         def async_write_ha_state(self):
             pass
 
+        def async_on_remove(self, func):
+            self._on_remove = getattr(self, "_on_remove", [])
+            self._on_remove.append(func)
+
         async def async_added_to_hass(self):
             pass
 
@@ -330,9 +339,16 @@ def _install_ha_stubs() -> None:
 
     sens_comp = types.ModuleType("homeassistant.components.sensor")
 
+    class SensorDeviceClass(StrEnum):
+        ENUM = "enum"
+
     class SensorEntity:
         def async_write_ha_state(self):
             pass
+
+        def async_on_remove(self, func):
+            self._on_remove = getattr(self, "_on_remove", [])
+            self._on_remove.append(func)
 
         async def async_added_to_hass(self):
             pass
@@ -340,6 +356,7 @@ def _install_ha_stubs() -> None:
         async def async_will_remove_from_hass(self):
             pass
 
+    sens_comp.SensorDeviceClass = SensorDeviceClass
     sens_comp.SensorEntity = SensorEntity
     sys.modules["homeassistant.components.sensor"] = sens_comp
 

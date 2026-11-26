@@ -4,7 +4,11 @@ from types import SimpleNamespace
 
 import pytest
 
-from custom_components.strava_webhook.const import DOMAIN, EVENT_STRAVA_WEBHOOK, SUPPORTED_SPORT_TYPES
+from custom_components.strava_webhook.const import (
+    DOMAIN,
+    EVENT_STRAVA_WEBHOOK,
+    SUPPORTED_SPORT_TYPES,
+)
 from custom_components.strava_webhook.device_trigger import (
     CONF_ASPECT_TYPE,
     CONF_OBJECT_TYPE,

@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.config_entries import SOURCE_REAUTH
 from homeassistant.core import callback
@@ -25,7 +26,6 @@ from .const import (
     OAUTH_SCOPES,
 )
 from .subscriptions import validate_callback_url
-import voluptuous as vol
 
 _LOGGER = logging.getLogger(__name__)
 

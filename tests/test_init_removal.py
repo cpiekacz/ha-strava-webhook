@@ -61,6 +61,7 @@ class _FakeSession:
 @pytest.mark.asyncio
 async def test_remove_entry_deletes_remote_subscription_even_after_unload():
     from homeassistant.core import HomeAssistant
+
     from custom_components.strava_webhook.subscriptions import SubscriptionManager
 
     hass = HomeAssistant()
@@ -92,9 +93,10 @@ async def test_remove_entry_deletes_remote_subscription_even_after_unload():
 
     # Unload must NOT delete remote subscription
     runtime = SimpleNamespace(athlete_id=555, subscription_manager=manager)
-    hass.data[DOMAIN] = {"entry-1": runtime}
+    entry.runtime_data = runtime
     assert await async_unload_entry(hass, entry) is True
     assert fake_http.deleted_ids == []
+    assert DOMAIN not in hass.data
 
     # Remove entry MUST delete remote subscription
     await async_remove_entry(hass, entry)

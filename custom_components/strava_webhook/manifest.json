@@ -4,6 +4,9 @@
   "after_dependencies": [
     "cloud"
   ],
+  "categories": [
+    "health_wellbeing"
+  ],
   "codeowners": [
     "@cpiekacz"
   ],
@@ -17,5 +20,5 @@
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/cpiekacz/ha-strava-webhook/issues",
   "requirements": [],
-  "version": "1.0.1"
+  "version": "1.0.2"
 }

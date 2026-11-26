@@ -1,8 +1,7 @@
 """Tests for WebhookReceiver and SubscriptionManager (including delete on removal)."""
 
-from contextlib import asynccontextmanager
 import json
-from types import SimpleNamespace
+from contextlib import asynccontextmanager
 from unittest.mock import AsyncMock
 
 import pytest

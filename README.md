@@ -1,5 +1,9 @@
 # Strava Webhook for Home Assistant
 
+[![Validate](https://github.com/cpiekacz/ha-strava-webhook/actions/workflows/validate.yaml/badge.svg)](https://github.com/cpiekacz/ha-strava-webhook/actions/workflows/validate.yaml)
+[![Tests](https://github.com/cpiekacz/ha-strava-webhook/actions/workflows/tests.yaml/badge.svg)](https://github.com/cpiekacz/ha-strava-webhook/actions/workflows/tests.yaml)
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=cpiekacz&repository=ha-strava-webhook&category=integration)
+
 A lightweight, UI-configurable Home Assistant custom integration that listens for **Strava Push Webhook** events (`create`, `update`, `delete` for activities and `update` for athlete deauthorization), optionally enriches activity webhooks with full activity metadata from the Strava REST API, exposes native **Automation UI Device Triggers** with sport/type filters, and fires a rich `strava_webhook_event` containing **100% of the raw webhook parameters** plus activity attributes.
 
 ## Features
@@ -26,6 +30,9 @@ A lightweight, UI-configurable Home Assistant custom integration that listens fo
 
 ### Option 1: HACS (Recommended)
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=cpiekacz&repository=ha-strava-webhook&category=integration)
+
+Or add manually in HACS:
 1. Open **HACS** in Home Assistant.
 2. Open the top-right menu (`⋮`) → **Custom repositories**.
 3. Add this repository URL: `https://github.com/cpiekacz/ha-strava-webhook` and select **Integration** as the category.
@@ -45,6 +52,8 @@ A lightweight, UI-configurable Home Assistant custom integration that listens fo
 ---
 
 ## Configuration
+
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=strava_webhook)
 
 1. Go to **Settings → Devices & services → Add integration → Strava Webhook**.
 2. When prompted by Home Assistant's **Application Credentials** dialog, enter any friendly label (e.g. `Strava`) along with your Strava **Client ID** and **Client Secret**.
@@ -108,6 +117,18 @@ actions:
 
 - `strava_webhook.simulate_event`: Fires a simulated `strava_webhook_event` (defaults to `activity` / `create` / `WeightTraining`) to test your automations without completing a real workout.
 - `strava_webhook.resync_subscription`: Re-checks and repairs the remote Strava Push Subscription.
+
+---
+
+## Removing the Integration
+
+This integration follows standard Home Assistant removal and automatically cleans up its remote Strava webhook subscription:
+
+1. Go to **Settings → Devices & services → Strava Webhook**.
+2. Open the three-dot menu (`⋮`) on the integration entry and select **Delete**.
+   - Home Assistant automatically deletes the remote Strava Push Subscription (`DELETE /api/v3/push_subscriptions/{id}`) when no other configured entry shares the same `Client ID`.
+3. *(Optional)* Remove the stored OAuth2 credentials under **Settings → Devices & services → `⋮` → Application Credentials**.
+4. *(Optional)* Revoke the app in your Strava account at [strava.com/settings/apps](https://www.strava.com/settings/apps) and uninstall **Strava Webhook** from HACS (or delete `custom_components/strava_webhook/` and restart Home Assistant).
 
 ---
 

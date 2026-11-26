@@ -2,35 +2,35 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 from homeassistant.components.event import EventEntity
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from . import StravaWebhookRuntime
 from .const import DOMAIN
 from .event_builder import build_event_entity_attributes, determine_entity_event_type
+from .runtime import StravaWebhookConfigEntry, StravaWebhookRuntime
 
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: StravaWebhookConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Strava Webhook event entity from a config entry."""
-    runtime: StravaWebhookRuntime = entry.runtime_data
+    runtime = entry.runtime_data
     async_add_entities([StravaWebhookEventEntity(runtime)])
 
 
 class StravaWebhookEventEntity(EventEntity):
     """Represents the latest incoming Strava webhook event for an athlete."""
 
+    _attr_should_poll = False
     _attr_has_entity_name = True
     _attr_translation_key = "last_webhook_event"
-    _attr_event_types = [
+    _attr_event_types: ClassVar[list[str]] = [
         "activity_created",
         "activity_updated",
         "activity_deleted",
@@ -44,19 +44,11 @@ class StravaWebhookEventEntity(EventEntity):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, str(runtime.athlete_id))},
         )
-        self._unsub: Any = None
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to runtime webhook notifications."""
         await super().async_added_to_hass()
-        self._unsub = self._runtime.add_listener(self._handle_webhook_event)
-
-    async def async_will_remove_from_hass(self) -> None:
-        """Unsubscribe from runtime notifications."""
-        if self._unsub is not None:
-            self._unsub()
-            self._unsub = None
-        await super().async_will_remove_from_hass()
+        self.async_on_remove(self._runtime.add_listener(self._handle_webhook_event))
 
     @callback
     def _handle_webhook_event(self, payload: dict[str, Any]) -> None:
